@@ -12,33 +12,42 @@
  * -----------------------------------------------------------------------------
  */
 #include "fossil/code/app.h"
-#include "fossil/code/lifecycle.h"
+#include <unistd.h>
 
 
-// Fossil App example implementation (Custom application)
-void custom_app_on_create(fossil_app_engine_t* app) {
-    fossil_io_printf("Custom App Created\n");
-    app->state = FOSSIL_APP_LIFECYCLE_STATE_CREATED;
+void show_commands() {
+    printf("Usage: fossil_app [OPTIONS]\n");
+    printf("  --help           Show this help message\n");
+    printf("  --version        Show version information\n");
+    printf("  color            Enable colored output ('enable'/disable/auto)\n");
+    exit(0);
 }
 
-void custom_app_on_start(fossil_app_engine_t* app) {
-    fossil_io_printf("Custom App Started\n");
-    app->state = FOSSIL_APP_LIFECYCLE_STATE_STARTED;
+void show_version() {
+    printf("%s version %s\n", FOSSIL_APP_NAME, FOSSIL_APP_VERSION);
+    exit(0);
 }
 
 bool app_entry(int argc, char** argv) {
-    (void)argc; // Unused parameter
-    (void)argv; // Unused parameter
+    bool color_enabled = false;
+    for (int i = 1; i < argc; ++i) {
+        if (strcmp(argv[i], "--help") == 0) {
+            show_commands();
+        } else if (strcmp(argv[i], "--version") == 0) {
+            show_version();
+        } else if (strcmp(argv[i], "color") == 0) {
+            if (i + 1 < argc) {
+                if (strcmp(argv[i + 1], "enable") == 0) {
+                    FOSSIL_IO_COLOR_ENABLE = true;
+                } else if (strcmp(argv[i + 1], "disable") == 0) {
+                    FOSSIL_IO_COLOR_ENABLE = false;
+                } else if (strcmp(argv[i + 1], "auto") == 0) {
+                    FOSSIL_IO_COLOR_ENABLE = isatty(STDOUT_FILENO);
+                }
+                ++i; // Skip next argument
+            }
+        }
+    }
 
-    fossil_io_printf("Custom App Entry\n");
-    fossil_app_engine_t app;
-    fossil_app_init(&app);
-    
-    // Overriding with custom app-specific behavior
-    app.on_create = custom_app_on_create;
-    app.on_start = custom_app_on_start;
-
-    // Run the Fossil App engine
-    fossil_app_run(&app);
     return 0;
 }
