@@ -1,7 +1,7 @@
 dir = include_directories('.')
 
-app_lib = library('app-code',
-    files('lifecycle.c', 'app.c'),
+app_lib = static_library('app-code',
+    files('app.c'),
     install: true,
     dependencies: [code_deps],
     include_directories: dir)
