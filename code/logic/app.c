@@ -28,7 +28,7 @@ void show_version(void) {
 }
 
 bool app_entry(int argc, char** argv) {
-    for (u32 i = 1; i < argc; ++i) {
+    for (i32 i = 1; i < argc; ++i) {
         if (argv[i] == cnullptr) continue;
         if (fossil_io_cstring_compare(argv[i], "--help") == 0) {
             show_commands(argv[0]);
