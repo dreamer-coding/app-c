@@ -12,6 +12,7 @@
  * -----------------------------------------------------------------------------
  */
 #include "fossil/code/app.h"
+#include "fossil/code/magic.h"
 #include <unistd.h>
 
 int FOSSIL_IO_VERBOSE = false; // Verbose output flag
@@ -39,6 +40,12 @@ void show_name(void) {
 }
 
 bool app_entry(int argc, char** argv) {
+    // List of valid commands for suggestion
+    const char *valid_commands[] = {
+        "--help", "--version", "--name", "--verbose", "--color", "--clear"
+    };
+    const int num_commands = sizeof(valid_commands) / sizeof(valid_commands[0]);
+
     for (i32 i = 1; i < argc; ++i) {
         if (argv[i] == cnullptr) continue;
 
@@ -65,7 +72,20 @@ bool app_entry(int argc, char** argv) {
         } else if (fossil_io_cstring_compare(argv[i], "--clear") == 0) {
             fossil_io_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
         } else {
-            fossil_io_printf("{red}Unknown command: %s{reset}\n", argv[i]);
+            // Try to suggest a valid command
+            fossil_ti_reason_t reason = {0};
+            const char *suggested = fossil_it_magic_suggest_command(
+                argv[i], valid_commands, num_commands, &reason
+            );
+            if (suggested) {
+                fossil_io_printf(
+                    "{red}Unknown command: %s{reset}\n"
+                    "{yellow}Did you mean: %s?{reset}\n",
+                    argv[i], suggested
+                );
+            } else {
+                fossil_io_printf("{red}Unknown command: %s{reset}\n", argv[i]);
+            }
             return false;
         }
     }

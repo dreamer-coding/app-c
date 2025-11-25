@@ -18,8 +18,8 @@ Ensure you have the following installed before starting:
 1. **Clone the Repository**:
 
     ```sh
-    git clone https://github.com/fossillogic/fossil-app.git
-    cd fossil-app
+    git clone https://github.com/fossillogic/app-c.git
+    cd app-c
     ```
 
 2. **Configure the Build**:
@@ -48,12 +48,12 @@ Ensure you have the following installed before starting:
 
 ## **Contributing**
 
-Interested in contributing? Please open pull requests or create issues on the [GitHub repository](https://github.com/fossillogic/fossil-app).
+Interested in contributing? Please open pull requests or create issues on the [GitHub repository](https://github.com/fossillogic/app-c).
 
 ## **Feedback and Support**
 
-For issues, questions, or feedback, open an issue on the [GitHub repository](https://github.com/fossillogic/fossil-app/issues).
+For issues, questions, or feedback, open an issue on the [GitHub repository](https://github.com/fossillogic/app-c/issues).
 
 ## **License**
 
-This project is licensed under the [Mozilla Public License](LICENSE).
+This project is licensed under the [Apache 2.0 License](LICENSE).
