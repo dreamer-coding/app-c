@@ -29,6 +29,23 @@
 #include <fossil/io/framework.h>
 #include <fossil/math/framework.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#include <fileapi.h>
+#include <winbase.h>
+#include <handleapi.h>
+#include <direct.h>
+#include <io.h>
+#define _CRT_INTERNAL_NONSTDC_NAMES 1
+#include <sys/types.h>
+#include <sys/stat.h>
+#define mkdir(path, mode) _mkdir(path)
+#else
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#endif
+
 #define FOSSIL_APP_NAME "Sample App"
 #define FOSSIL_APP_VERSION "0.1.0"
 
